@@ -9,24 +9,22 @@ workflows:
         script: flutter pub get
       - name: Generate icons
         script: |
-          mkdir -p android/app/src/main/res/mipmap-hdpi
+          pip3 install Pillow
           mkdir -p android/app/src/main/res/mipmap-mdpi
+          mkdir -p android/app/src/main/res/mipmap-hdpi
           mkdir -p android/app/src/main/res/mipmap-xhdpi
           mkdir -p android/app/src/main/res/mipmap-xxhdpi
           mkdir -p android/app/src/main/res/mipmap-xxxhdpi
           python3 -c "
-          from PIL import Image, ImageDraw, ImageFont
-          import os
-          sizes = {'mipmap-mdpi':48,'mipmap-hdpi':72,'mipmap-xhdpi':96,'mipmap-xxhdpi':144,'mipmap-xxxhdpi':192}
-          for folder, size in sizes.items():
-              img = Image.new('RGB', (size,size), color=(26,35,126))
-              draw = ImageDraw.Draw(img)
-              draw.ellipse([size//8,size//8,size*7//8,size*7//8], fill=(255,255,255))
-              draw.text((size//3,size//3), 'O', fill=(26,35,126))
-              path = f'android/app/src/main/res/{folder}/ic_launcher.png'
-              img.save(path)
-              print(f'Created {path}')
-          "
+from PIL import Image, ImageDraw
+sizes = {'mipmap-mdpi':48,'mipmap-hdpi':72,'mipmap-xhdpi':96,'mipmap-xxhdpi':144,'mipmap-xxxhdpi':192}
+for folder, size in sizes.items():
+    img = Image.new('RGBA', (size,size), (26,35,126,255))
+    draw = ImageDraw.Draw(img)
+    draw.ellipse([size//8,size//8,size*7//8,size*7//8], fill=(255,255,255,255))
+    img.save(f'android/app/src/main/res/{folder}/ic_launcher.png')
+print('Done')
+"
       - name: Build APK
         script: flutter build apk --release
     artifacts:
