@@ -579,3 +579,57 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
     );
   }
 }
+// ===== AI MODERATOR =====
+class AIModerator {
+  static Map<String, dynamic> checkProperty({
+    required String title,
+    required String price,
+    required String phone,
+    required String city,
+  }) {
+    List<String> warnings = [];
+    bool approved = true;
+
+    // Проверка цены
+    final priceNum = int.tryParse(price.replaceAll(',', '').replaceAll(' ', ''));
+    if (priceNum != null) {
+      if (priceNum < 10000) {
+        warnings.add('⚠️ Цена слишком низкая — возможное мошенничество');
+        approved = false;
+      }
+      if (priceNum > 50000000) {
+        warnings.add('⚠️ Цена слишком высокая — проверьте правильность');
+      }
+    }
+
+    // Проверка телефона
+    if (phone.length < 9) {
+      warnings.add('⚠️ Неверный формат номера телефона');
+      approved = false;
+    }
+    if (!phone.startsWith('+992') && !phone.startsWith('992') && !phone.startsWith('0')) {
+      warnings.add('⚠️ Номер не таджикский (+992)');
+    }
+
+    // Проверка заголовка
+    if (title.length < 5) {
+      warnings.add('⚠️ Заголовок слишком короткий');
+      approved = false;
+    }
+    if (title.contains('СРОЧНО') || title.contains('БЕСПЛАТНО')) {
+      warnings.add('⚠️ Подозрительные слова в заголовке');
+    }
+
+    // Проверка города
+    if (city.isEmpty) {
+      warnings.add('⚠️ Не указан город');
+      approved = false;
+    }
+
+    return {
+      'approved': approved && warnings.isEmpty,
+      'warnings': warnings,
+      'score': warnings.isEmpty ? 100 : (100 - warnings.length * 20),
+    };
+  }
+}
