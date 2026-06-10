@@ -14,11 +14,11 @@ workflows:
           mkdir -p android/app/src/main/res/mipmap-xhdpi
           mkdir -p android/app/src/main/res/mipmap-xxhdpi
           mkdir -p android/app/src/main/res/mipmap-xxxhdpi
-          cp "android/app/src/main/file_00000000e300722f9746c198873cee6f.png" android/app/src/main/res/mipmap-hdpi/ic_launcher.png
-          cp "android/app/src/main/file_00000000e300722f9746c198873cee6f.png" android/app/src/main/res/mipmap-mdpi/ic_launcher.png
-          cp "android/app/src/main/file_00000000e300722f9746c198873cee6f.png" android/app/src/main/res/mipmap-xhdpi/ic_launcher.png
-          cp "android/app/src/main/file_00000000e300722f9746c198873cee6f.png" android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png
-          cp "android/app/src/main/file_00000000e300722f9746c198873cee6f.png" android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png
+          find android/app/src/main -name "*.png" -exec cp {} android/app/src/main/res/mipmap-hdpi/ic_launcher.png \;
+          find android/app/src/main -name "*.png" -exec cp {} android/app/src/main/res/mipmap-mdpi/ic_launcher.png \;
+          find android/app/src/main -name "*.png" -exec cp {} android/app/src/main/res/mipmap-xhdpi/ic_launcher.png \;
+          find android/app/src/main -name "*.png" -exec cp {} android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png \;
+          find android/app/src/main -name "*.png" -exec cp {} android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png \;
       - name: Build APK
         script: flutter build apk --release
     artifacts:
