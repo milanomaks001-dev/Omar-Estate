@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(const OmarEstateApp());
 }
 
-// ===== TRANSLATIONS =====
 Map<String, Map<String, String>> translations = {
   'ru': {
     'app_name': 'Омар Эстейт',
@@ -22,11 +20,7 @@ Map<String, Map<String, String>> translations = {
     'city': 'Город',
     'deal_type': 'Тип сделки',
     'prop_type': 'Тип недвижимости',
-    'sell': 'Продажа',
-    'rent': 'Аренда',
     'my_ads': 'Мои объявления',
-    'settings': 'Настройки',
-    'help': 'Помощь',
     'logout': 'Выйти',
     'publish': 'Опубликовать',
     'title': 'Заголовок',
@@ -49,11 +43,7 @@ Map<String, Map<String, String>> translations = {
     'city': 'Шаҳр',
     'deal_type': 'Намуди муомила',
     'prop_type': 'Намуди амвол',
-    'sell': 'Фурӯш',
-    'rent': 'Иҷора',
     'my_ads': 'Эълонҳои ман',
-    'settings': 'Танзимот',
-    'help': 'Кӯмак',
     'logout': 'Баромадан',
     'publish': 'Нашр кардан',
     'title': 'Сарлавҳа',
@@ -67,24 +57,18 @@ String currentLang = 'ru';
 String t(String key) => translations[currentLang]?[key] ?? key;
 
 const List<String> tajikCities = [
-  'Душанбе','Худжанд','Бохтар','Куляб',
-  'Канибадам','Пенджикент','Хорог','Турсунзаде',
-  'Гиссар','Рогун','Исфара','Варзоб',
-  'Файзабад','Шахринав','Рудаки','Вахдат',
-  'Темурмалик','Ховалинг','Шаартуз','Носири Хусрав',
-  'Яван','Ванч','Ишкашим','Мургаб','Рашт','Шугнан','Дарваз'
+  'Душанбе','Худжанд','Бохтар','Куляб','Канибадам',
+  'Пенджикент','Хорог','Турсунзаде','Гиссар','Рогун',
 ];
 
 const List<String> propertyTypes = [
-  'Квартира','Дом','Офис','Магазин','Земля',
-  'Новостройка','Дача','Гараж','Склад'
+  'Квартира','Дом','Офис','Магазин','Земля','Новостройка',
 ];
 
 const Color primaryColor = Color(0xFF1A237E);
 
 class OmarEstateApp extends StatelessWidget {
   const OmarEstateApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -92,7 +76,6 @@ class OmarEstateApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
-        textTheme: GoogleFonts.rubikTextTheme(),
       ),
       home: const SplashScreen(),
     );
@@ -110,8 +93,10 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 2), () {
-      Navigator.pushReplacement(context,
-        MaterialPageRoute(builder: (_) => const LoginScreen()));
+      if (mounted) {
+        Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (_) => const LoginScreen()));
+      }
     });
   }
 
@@ -126,29 +111,24 @@ class _SplashScreenState extends State<SplashScreen> {
             end: Alignment.bottomCenter,
           ),
         ),
-        child: Center(
+        child: const Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                width: 120, height: 120,
-                decoration: const BoxDecoration(
-                  color: Colors.white, shape: BoxShape.circle),
-                child: const Center(
-                  child: Text('OMAR', style: TextStyle(
-                    fontSize: 24, fontWeight: FontWeight.bold,
-                    color: primaryColor)),
-                ),
+              CircleAvatar(
+                radius: 60,
+                backgroundColor: Colors.white,
+                child: Text('OMAR', style: TextStyle(
+                  fontSize: 22, fontWeight: FontWeight.bold,
+                  color: primaryColor)),
               ),
-              const SizedBox(height: 24),
-              const Text('OMAR ESTATE', style: TextStyle(
+              SizedBox(height: 24),
+              Text('OMAR ESTATE', style: TextStyle(
                 fontSize: 28, fontWeight: FontWeight.bold,
                 color: Colors.white, letterSpacing: 4)),
-              const SizedBox(height: 8),
-              const Text('Бо Ақл Биёв! 🏠',
+              SizedBox(height: 8),
+              Text('Бо Ақл Биёв! 🏠',
                 style: TextStyle(fontSize: 16, color: Colors.white70)),
-              const Text('Найди дом своей мечты!',
-                style: TextStyle(fontSize: 14, color: Colors.white60)),
             ],
           ),
         ),
@@ -165,11 +145,6 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _phoneController = TextEditingController();
-  String _lang = 'ru';
-
-  void _setLang(String lang) {
-    setState(() { _lang = lang; currentLang = lang; });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -196,15 +171,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
                 const SizedBox(height: 32),
-                Container(
-                  width: 100, height: 100,
-                  decoration: const BoxDecoration(
-                    color: Colors.white, shape: BoxShape.circle),
-                  child: const Center(
-                    child: Text('OMAR', style: TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.bold,
-                      color: primaryColor)),
-                  ),
+                const CircleAvatar(
+                  radius: 50,
+                  backgroundColor: Colors.white,
+                  child: Text('OMAR', style: TextStyle(
+                    fontSize: 18, fontWeight: FontWeight.bold,
+                    color: primaryColor)),
                 ),
                 const SizedBox(height: 24),
                 Text(t('welcome'), style: const TextStyle(
@@ -233,8 +205,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                TextButton(
-                  onPressed: () {},
+                TextButton(onPressed: () {},
                   child: Text(t('promo'),
                     style: const TextStyle(color: Colors.white70))),
                 const SizedBox(height: 16),
@@ -268,9 +239,9 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _langBtn(String label, String code) {
-    bool active = _lang == code;
+    bool active = currentLang == code;
     return GestureDetector(
-      onTap: () => _setLang(code),
+      onTap: () => setState(() => currentLang = code),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         decoration: BoxDecoration(
@@ -298,30 +269,9 @@ class _HomeScreenState extends State<HomeScreen> {
   String? _selectedType;
 
   final List<Map<String, dynamic>> _properties = [
-    {
-      'title': 'Новостройка 1 комн.',
-      'city': 'Душанбе, Шохмансур',
-      'price': '380,000',
-      'type': 'Новостройка',
-      'deal': 'Продажа',
-      'isVip': true,
-    },
-    {
-      'title': 'Земельный участок',
-      'city': 'Турсунзаде',
-      'price': '120,000',
-      'type': 'Земля',
-      'deal': 'Продажа',
-      'isVip': false,
-    },
-    {
-      'title': 'Гостиница',
-      'city': 'Душанбе',
-      'price': '2,500,000',
-      'type': 'Гостиница',
-      'deal': 'Продажа',
-      'isVip': false,
-    },
+    {'title': 'Новостройка 1 комн.', 'city': 'Душанбе', 'price': '380,000', 'type': 'Новостройка', 'deal': 'Продажа', 'isVip': true},
+    {'title': 'Земельный участок', 'city': 'Турсунзаде', 'price': '120,000', 'type': 'Земля', 'deal': 'Продажа', 'isVip': false},
+    {'title': 'Гостиница', 'city': 'Душанбе', 'price': '2,500,000', 'type': 'Гостиница', 'deal': 'Продажа', 'isVip': false},
   ];
 
   @override
@@ -330,50 +280,46 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         backgroundColor: primaryColor,
         title: Text(t('app_name'), style: const TextStyle(
-          color: Colors.white, fontWeight: FontWeight.bold, fontSize: 22)),
+          color: Colors.white, fontWeight: FontWeight.bold)),
         actions: [
-          IconButton(icon: const Icon(Icons.search, color: Colors.white),
-            onPressed: () {}),
           IconButton(icon: const Icon(Icons.language, color: Colors.white),
             onPressed: () => setState(() {
               currentLang = currentLang == 'ru' ? 'tj' : 'ru';
             })),
         ],
       ),
-      body: Column(
-        children: [
-          Container(
-            color: Colors.white,
-            padding: const EdgeInsets.all(12),
-            child: Column(children: [
-              Row(children: [
-                Expanded(child: _drop(tajikCities, t('city'),
-                  _selectedCity, (v) => setState(() => _selectedCity = v))),
-                const SizedBox(width: 8),
-                Expanded(child: _drop(['Продажа','Аренда'],
-                  t('deal_type'), _selectedDeal,
-                  (v) => setState(() => _selectedDeal = v))),
-                IconButton(icon: const Icon(Icons.clear),
-                  onPressed: () => setState(() {
-                    _selectedCity = null;
-                    _selectedDeal = null;
-                    _selectedType = null;
-                  })),
-              ]),
-              const SizedBox(height: 8),
-              _drop(propertyTypes, t('prop_type'), _selectedType,
-                (v) => setState(() => _selectedType = v)),
+      body: Column(children: [
+        Container(
+          color: Colors.white,
+          padding: const EdgeInsets.all(12),
+          child: Column(children: [
+            Row(children: [
+              Expanded(child: _drop(tajikCities, t('city'),
+                _selectedCity, (v) => setState(() => _selectedCity = v))),
+              const SizedBox(width: 8),
+              Expanded(child: _drop(['Продажа','Аренда'],
+                t('deal_type'), _selectedDeal,
+                (v) => setState(() => _selectedDeal = v))),
+              IconButton(icon: const Icon(Icons.clear),
+                onPressed: () => setState(() {
+                  _selectedCity = null;
+                  _selectedDeal = null;
+                  _selectedType = null;
+                })),
             ]),
+            const SizedBox(height: 8),
+            _drop(propertyTypes, t('prop_type'), _selectedType,
+              (v) => setState(() => _selectedType = v)),
+          ]),
+        ),
+        Expanded(
+          child: ListView.builder(
+            padding: const EdgeInsets.all(12),
+            itemCount: _properties.length,
+            itemBuilder: (ctx, i) => _card(_properties[i]),
           ),
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.all(12),
-              itemCount: _properties.length,
-              itemBuilder: (ctx, i) => _propertyCard(_properties[i]),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ]),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => Navigator.push(context,
           MaterialPageRoute(builder: (_) => const AddPropertyScreen())),
@@ -390,86 +336,62 @@ class _HomeScreenState extends State<HomeScreen> {
             MaterialPageRoute(builder: (_) => const ProfileScreen()));
         },
         items: [
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.home), label: t('home')),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.favorite), label: t('favorites')),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.person), label: t('profile')),
+          BottomNavigationBarItem(icon: const Icon(Icons.home), label: t('home')),
+          BottomNavigationBarItem(icon: const Icon(Icons.favorite), label: t('favorites')),
+          BottomNavigationBarItem(icon: const Icon(Icons.person), label: t('profile')),
         ],
       ),
     );
   }
 
-  Widget _propertyCard(Map<String, dynamic> p) {
+  Widget _card(Map<String, dynamic> p) {
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Stack(children: [
-            Container(
-              height: 160,
-              decoration: const BoxDecoration(
-                color: Color(0xFFE8EAF6),
-                borderRadius: BorderRadius.vertical(top: Radius.circular(12))),
-              child: const Center(
-                child: Icon(Icons.home, size: 60, color: primaryColor)),
-            ),
-            if (p['isVip'] == true)
-              Positioned(top: 8, left: 8,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(color: primaryColor,
-                    borderRadius: BorderRadius.circular(8)),
-                  child: const Text('🔥 VIP', style: TextStyle(
-                    color: Colors.white, fontWeight: FontWeight.bold)),
-                )),
-            Positioned(top: 8, right: 8,
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Stack(children: [
+          Container(height: 160,
+            decoration: const BoxDecoration(
+              color: Color(0xFFE8EAF6),
+              borderRadius: BorderRadius.vertical(top: Radius.circular(12))),
+            child: const Center(child: Icon(Icons.home, size: 60, color: primaryColor))),
+          if (p['isVip'] == true)
+            Positioned(top: 8, left: 8,
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(color: Colors.white,
+                decoration: BoxDecoration(color: primaryColor,
                   borderRadius: BorderRadius.circular(8)),
-                child: Text(p['deal'],
-                  style: const TextStyle(fontWeight: FontWeight.bold)),
-              )),
-          ]),
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(p['title'], style: const TextStyle(
-                  fontWeight: FontWeight.bold, fontSize: 16)),
-                const SizedBox(height: 4),
-                Row(children: [
-                  const Icon(Icons.location_on, size: 14, color: Colors.grey),
-                  Text(p['city'], style: const TextStyle(
-                    color: Colors.grey, fontSize: 13)),
-                ]),
-                const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('${p['price']} сом', style: const TextStyle(
-                      color: primaryColor, fontWeight: FontWeight.bold,
-                      fontSize: 16)),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(8)),
-                      child: Text(p['type'],
-                        style: const TextStyle(fontSize: 12)),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+                child: const Text('🔥 VIP', style: TextStyle(
+                  color: Colors.white, fontWeight: FontWeight.bold)))),
+          Positioned(top: 8, right: 8,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(color: Colors.white,
+                borderRadius: BorderRadius.circular(8)),
+              child: Text(p['deal'],
+                style: const TextStyle(fontWeight: FontWeight.bold)))),
+        ]),
+        Padding(padding: const EdgeInsets.all(12),
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(p['title'], style: const TextStyle(
+              fontWeight: FontWeight.bold, fontSize: 16)),
+            const SizedBox(height: 4),
+            Row(children: [
+              const Icon(Icons.location_on, size: 14, color: Colors.grey),
+              Text(p['city'], style: const TextStyle(color: Colors.grey)),
+            ]),
+            const SizedBox(height: 8),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              Text('${p['price']} сом', style: const TextStyle(
+                color: primaryColor, fontWeight: FontWeight.bold, fontSize: 16)),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(8)),
+                child: Text(p['type'], style: const TextStyle(fontSize: 12))),
+            ]),
+          ])),
+      ]),
     );
   }
 
@@ -508,8 +430,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: primaryColor,
-        title: Text(t('add'),
-          style: const TextStyle(color: Colors.white)),
+        title: Text(t('add'), style: const TextStyle(color: Colors.white)),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: SingleChildScrollView(
@@ -517,11 +438,9 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
         child: Column(children: [
           _tf(_titleController, t('title'), Icons.title),
           const SizedBox(height: 12),
-          _tf(_priceController, t('price'), Icons.monetization_on,
-            isNumber: true),
+          _tf(_priceController, t('price'), Icons.monetization_on, isNumber: true),
           const SizedBox(height: 12),
-          _tf(_phoneController, t('phone_contact'), Icons.phone,
-            isNumber: true),
+          _tf(_phoneController, t('phone_contact'), Icons.phone, isNumber: true),
           const SizedBox(height: 12),
           _drop(tajikCities, t('city'), _selectedCity,
             (v) => setState(() => _selectedCity = v)),
@@ -532,16 +451,14 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
           _drop(['Продажа','Аренда'], t('deal_type'), _selectedDeal,
             (v) => setState(() => _selectedDeal = v)),
           const SizedBox(height: 12),
-          _tf(_descController, t('description'), Icons.description,
-            maxLines: 4),
+          _tf(_descController, t('description'), Icons.description, maxLines: 4),
           const SizedBox(height: 24),
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('✅ Объявление сохранено!'),
+                  const SnackBar(content: Text('✅ Объявление сохранено!'),
                     backgroundColor: Colors.green));
                 Navigator.pop(context);
               },
@@ -551,8 +468,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12))),
               child: Text(t('publish'), style: const TextStyle(
-                color: Colors.white, fontSize: 16,
-                fontWeight: FontWeight.bold)),
+                color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
             ),
           ),
         ]),
@@ -569,19 +485,16 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
       decoration: InputDecoration(
         labelText: label,
         prefixIcon: Icon(icon),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12))),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12))),
     );
   }
 
   Widget _drop(List<String> items, String hint, String? value,
       ValueChanged<String?> onChanged) {
     return DropdownButtonFormField<String>(
-      value: value,
-      hint: Text(hint),
+      value: value, hint: Text(hint),
       decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12))),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12))),
       items: items.map((e) => DropdownMenuItem(
         value: e, child: Text(e))).toList(),
       onChanged: onChanged,
@@ -597,8 +510,7 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: primaryColor,
-        title: Text(t('profile'),
-          style: const TextStyle(color: Colors.white)),
+        title: Text(t('profile'), style: const TextStyle(color: Colors.white)),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: ListView(padding: const EdgeInsets.all(16), children: [
@@ -608,11 +520,15 @@ class ProfileScreen extends StatelessWidget {
         const Center(child: Text('+992 900 00 00 00',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),
         const SizedBox(height: 24),
-        _item(Icons.home, 'Мои объявления', context),
-        _item(Icons.star, 'VIP & PREMIUM', context),
-        _item(Icons.card_giftcard, 'Промо-коды', context),
-        _item(Icons.settings, 'Настройки', context),
-        _item(Icons.help, 'Помощь', context),
+        ListTile(leading: const Icon(Icons.home, color: primaryColor),
+          title: Text(t('my_ads')),
+          trailing: const Icon(Icons.chevron_right), onTap: () {}),
+        const ListTile(leading: Icon(Icons.star, color: primaryColor),
+          title: Text('VIP & PREMIUM'),
+          trailing: Icon(Icons.chevron_right)),
+        const ListTile(leading: Icon(Icons.card_giftcard, color: primaryColor),
+          title: Text('Промо-коды'),
+          trailing: Icon(Icons.chevron_right)),
         const SizedBox(height: 24),
         ElevatedButton(
           onPressed: () => Navigator.pushReplacement(context,
@@ -626,15 +542,6 @@ class ProfileScreen extends StatelessWidget {
             color: Colors.white, fontSize: 16)),
         ),
       ]),
-    );
-  }
-
-  Widget _item(IconData icon, String title, BuildContext context) {
-    return ListTile(
-      leading: Icon(icon, color: primaryColor),
-      title: Text(title),
-      trailing: const Icon(Icons.chevron_right),
-      onTap: () {},
     );
   }
 }
