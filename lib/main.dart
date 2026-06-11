@@ -6,7 +6,11 @@ import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  try {
   await Firebase.initializeApp();
+} catch (e) {
+  // ignore
+}
   runApp(const OmarEstateApp());
 }
 
