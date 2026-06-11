@@ -1,16 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  try {
-  await Firebase.initializeApp();
-} catch (e) {
-  // ignore
-}
+void main() {
   runApp(const OmarEstateApp());
 }
 
@@ -33,9 +24,6 @@ Map<String, Map<String, String>> translations = {
     'prop_type': 'Тип недвижимости',
     'sell': 'Продажа',
     'rent': 'Аренда',
-    'buy': 'Покупка',
-    'vip': '🔥 VIP',
-    'premium': '⭐ PREMIUM',
     'my_ads': 'Мои объявления',
     'settings': 'Настройки',
     'help': 'Помощь',
@@ -45,7 +33,6 @@ Map<String, Map<String, String>> translations = {
     'price': 'Цена (сомони)',
     'phone_contact': 'Контактный телефон',
     'description': 'Описание',
-    'somoni': 'сом',
   },
   'tj': {
     'app_name': 'Омар Эстейт',
@@ -64,9 +51,6 @@ Map<String, Map<String, String>> translations = {
     'prop_type': 'Намуди амвол',
     'sell': 'Фурӯш',
     'rent': 'Иҷора',
-    'buy': 'Харид',
-    'vip': '🔥 VIP',
-    'premium': '⭐ PREMIUM',
     'my_ads': 'Эълонҳои ман',
     'settings': 'Танзимот',
     'help': 'Кӯмак',
@@ -76,14 +60,12 @@ Map<String, Map<String, String>> translations = {
     'price': 'Нарх (сомонӣ)',
     'phone_contact': 'Телефони тамос',
     'description': 'Тавсиф',
-    'somoni': 'сом',
   },
 };
 
 String currentLang = 'ru';
 String t(String key) => translations[currentLang]?[key] ?? key;
 
-// ===== CITIES =====
 const List<String> tajikCities = [
   'Душанбе','Худжанд','Бохтар','Куляб',
   'Канибадам','Пенджикент','Хорог','Турсунзаде',
@@ -98,11 +80,8 @@ const List<String> propertyTypes = [
   'Новостройка','Дача','Гараж','Склад'
 ];
 
-// ===== COLORS =====
 const Color primaryColor = Color(0xFF1A237E);
-const Color accentColor = Color(0xFF3949AB);
 
-// ===== APP =====
 class OmarEstateApp extends StatelessWidget {
   const OmarEstateApp({super.key});
 
@@ -120,7 +99,6 @@ class OmarEstateApp extends StatelessWidget {
   }
 }
 
-// ===== SPLASH =====
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
   @override
@@ -132,8 +110,8 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 2), () {
-      Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (_) => const LoginScreen()));
+      Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (_) => const LoginScreen()));
     });
   }
 
@@ -155,23 +133,17 @@ class _SplashScreenState extends State<SplashScreen> {
               Container(
                 width: 120, height: 120,
                 decoration: const BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                ),
+                  color: Colors.white, shape: BoxShape.circle),
                 child: const Center(
-                  child: Text('OMAR',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: primaryColor,
-                    )),
+                  child: Text('OMAR', style: TextStyle(
+                    fontSize: 24, fontWeight: FontWeight.bold,
+                    color: primaryColor)),
                 ),
               ),
               const SizedBox(height: 24),
-              const Text('OMAR ESTATE',
-                style: TextStyle(fontSize: 28,
-                  fontWeight: FontWeight.bold, color: Colors.white,
-                  letterSpacing: 4)),
+              const Text('OMAR ESTATE', style: TextStyle(
+                fontSize: 28, fontWeight: FontWeight.bold,
+                color: Colors.white, letterSpacing: 4)),
               const SizedBox(height: 8),
               const Text('Бо Ақл Биёв! 🏠',
                 style: TextStyle(fontSize: 16, color: Colors.white70)),
@@ -185,7 +157,6 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 }
 
-// ===== LOGIN =====
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
   @override
@@ -230,15 +201,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   decoration: const BoxDecoration(
                     color: Colors.white, shape: BoxShape.circle),
                   child: const Center(
-                    child: Text('OMAR',
-                      style: TextStyle(fontSize: 20,
-                        fontWeight: FontWeight.bold, color: primaryColor)),
+                    child: Text('OMAR', style: TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold,
+                      color: primaryColor)),
                   ),
                 ),
                 const SizedBox(height: 24),
-                Text(t('welcome'),
-                  style: const TextStyle(fontSize: 28,
-                    fontWeight: FontWeight.bold, color: Colors.white)),
+                Text(t('welcome'), style: const TextStyle(
+                  fontSize: 28, fontWeight: FontWeight.bold,
+                  color: Colors.white)),
                 const SizedBox(height: 8),
                 Text(t('enter_phone'),
                   style: const TextStyle(color: Colors.white70)),
@@ -270,16 +241,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: _login,
+                    onPressed: () => Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (_) => const HomeScreen())),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12))),
-                    child: Text(t('login'),
-                      style: const TextStyle(
-                        color: primaryColor, fontWeight: FontWeight.bold,
-                        fontSize: 16)),
+                    child: Text(t('login'), style: const TextStyle(
+                      color: primaryColor, fontWeight: FontWeight.bold,
+                      fontSize: 16)),
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -306,21 +277,14 @@ class _LoginScreenState extends State<LoginScreen> {
           color: active ? Colors.white : Colors.transparent,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: Colors.white)),
-        child: Text(label,
-          style: TextStyle(
-            color: active ? primaryColor : Colors.white,
-            fontWeight: FontWeight.bold)),
+        child: Text(label, style: TextStyle(
+          color: active ? primaryColor : Colors.white,
+          fontWeight: FontWeight.bold)),
       ),
     );
   }
-
-  void _login() {
-    Navigator.pushReplacement(context,
-      MaterialPageRoute(builder: (_) => const HomeScreen()));
-  }
 }
 
-// ===== HOME =====
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
   @override
@@ -365,18 +329,15 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: primaryColor,
-        title: Text(t('app_name'),
-          style: const TextStyle(color: Colors.white,
-            fontWeight: FontWeight.bold, fontSize: 22)),
+        title: Text(t('app_name'), style: const TextStyle(
+          color: Colors.white, fontWeight: FontWeight.bold, fontSize: 22)),
         actions: [
           IconButton(icon: const Icon(Icons.search, color: Colors.white),
             onPressed: () {}),
           IconButton(icon: const Icon(Icons.language, color: Colors.white),
-            onPressed: () {
-              setState(() {
-                currentLang = currentLang == 'ru' ? 'tj' : 'ru';
-              });
-            }),
+            onPressed: () => setState(() {
+              currentLang = currentLang == 'ru' ? 'tj' : 'ru';
+            })),
         ],
       ),
       body: Column(
@@ -384,27 +345,25 @@ class _HomeScreenState extends State<HomeScreen> {
           Container(
             color: Colors.white,
             padding: const EdgeInsets.all(12),
-            child: Column(
-              children: [
-                Row(children: [
-                  Expanded(child: _drop(tajikCities, t('city'),
-                    _selectedCity, (v) => setState(() => _selectedCity = v))),
-                  const SizedBox(width: 8),
-                  Expanded(child: _drop(['Продажа','Аренда','Покупка'],
-                    t('deal_type'), _selectedDeal,
-                    (v) => setState(() => _selectedDeal = v))),
-                  IconButton(icon: const Icon(Icons.clear),
-                    onPressed: () => setState(() {
-                      _selectedCity = null;
-                      _selectedDeal = null;
-                      _selectedType = null;
-                    })),
-                ]),
-                const SizedBox(height: 8),
-                _drop(propertyTypes, t('prop_type'), _selectedType,
-                  (v) => setState(() => _selectedType = v)),
-              ],
-            ),
+            child: Column(children: [
+              Row(children: [
+                Expanded(child: _drop(tajikCities, t('city'),
+                  _selectedCity, (v) => setState(() => _selectedCity = v))),
+                const SizedBox(width: 8),
+                Expanded(child: _drop(['Продажа','Аренда'],
+                  t('deal_type'), _selectedDeal,
+                  (v) => setState(() => _selectedDeal = v))),
+                IconButton(icon: const Icon(Icons.clear),
+                  onPressed: () => setState(() {
+                    _selectedCity = null;
+                    _selectedDeal = null;
+                    _selectedType = null;
+                  })),
+              ]),
+              const SizedBox(height: 8),
+              _drop(propertyTypes, t('prop_type'), _selectedType,
+                (v) => setState(() => _selectedType = v)),
+            ]),
           ),
           Expanded(
             child: ListView.builder(
@@ -420,8 +379,7 @@ class _HomeScreenState extends State<HomeScreen> {
           MaterialPageRoute(builder: (_) => const AddPropertyScreen())),
         backgroundColor: primaryColor,
         icon: const Icon(Icons.add, color: Colors.white),
-        label: Text(t('add'),
-          style: const TextStyle(color: Colors.white)),
+        label: Text(t('add'), style: const TextStyle(color: Colors.white)),
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
@@ -453,31 +411,25 @@ class _HomeScreenState extends State<HomeScreen> {
           Stack(children: [
             Container(
               height: 160,
-              decoration: BoxDecoration(
-                color: const Color(0xFFE8EAF6),
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(12))),
+              decoration: const BoxDecoration(
+                color: Color(0xFFE8EAF6),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(12))),
               child: const Center(
                 child: Icon(Icons.home, size: 60, color: primaryColor)),
             ),
             if (p['isVip'] == true)
               Positioned(top: 8, left: 8,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: primaryColor,
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(color: primaryColor,
                     borderRadius: BorderRadius.circular(8)),
-                  child: const Text('🔥 VIP',
-                    style: TextStyle(color: Colors.white,
-                      fontWeight: FontWeight.bold)),
+                  child: const Text('🔥 VIP', style: TextStyle(
+                    color: Colors.white, fontWeight: FontWeight.bold)),
                 )),
             Positioned(top: 8, right: 8,
               child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: Colors.white,
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(color: Colors.white,
                   borderRadius: BorderRadius.circular(8)),
                 child: Text(p['deal'],
                   style: const TextStyle(fontWeight: FontWeight.bold)),
@@ -488,27 +440,25 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(p['title'],
-                  style: const TextStyle(fontWeight: FontWeight.bold,
-                    fontSize: 16)),
+                Text(p['title'], style: const TextStyle(
+                  fontWeight: FontWeight.bold, fontSize: 16)),
                 const SizedBox(height: 4),
                 Row(children: [
                   const Icon(Icons.location_on, size: 14, color: Colors.grey),
-                  Text(p['city'],
-                    style: const TextStyle(color: Colors.grey, fontSize: 13)),
+                  Text(p['city'], style: const TextStyle(
+                    color: Colors.grey, fontSize: 13)),
                 ]),
                 const SizedBox(height: 8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('${p['price']} сом',
-                      style: const TextStyle(color: primaryColor,
-                        fontWeight: FontWeight.bold, fontSize: 16)),
+                    Text('${p['price']} сом', style: const TextStyle(
+                      color: primaryColor, fontWeight: FontWeight.bold,
+                      fontSize: 16)),
                     Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[200],
+                      decoration: BoxDecoration(color: Colors.grey[200],
                         borderRadius: BorderRadius.circular(8)),
                       child: Text(p['type'],
                         style: const TextStyle(fontSize: 12)),
@@ -531,14 +481,13 @@ class _HomeScreenState extends State<HomeScreen> {
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(8))),
-      items: items.map((e) => DropdownMenuItem(value: e, child: Text(e,
-        style: const TextStyle(fontSize: 13)))).toList(),
+      items: items.map((e) => DropdownMenuItem(
+        value: e, child: Text(e, style: const TextStyle(fontSize: 13)))).toList(),
       onChanged: onChanged,
     );
   }
 }
 
-// ===== ADD PROPERTY =====
 class AddPropertyScreen extends StatefulWidget {
   const AddPropertyScreen({super.key});
   @override
@@ -553,40 +502,6 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
   String? _selectedCity;
   String? _selectedType;
   String? _selectedDeal;
-  bool _isLoading = false;
-
-  Future<void> _publish() async {
-    if (_titleController.text.isEmpty || _priceController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Заполните все поля!')));
-      return;
-    }
-    setState(() => _isLoading = true);
-    try {
-      await FirebaseFirestore.instance.collection('properties').add({
-        'title': _titleController.text,
-        'price': _priceController.text,
-        'phone': _phoneController.text,
-        'city': _selectedCity ?? '',
-        'type': _selectedType ?? '',
-        'deal': _selectedDeal ?? 'Продажа',
-        'description': _descController.text,
-        'isVip': false,
-        'createdAt': FieldValue.serverTimestamp(),
-      });
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('✅ Объявление опубликовано!'),
-            backgroundColor: Colors.green));
-        Navigator.pop(context);
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Ошибка: $e')));
-    }
-    setState(() => _isLoading = false);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -623,17 +538,21 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: _isLoading ? null : _publish,
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('✅ Объявление сохранено!'),
+                    backgroundColor: Colors.green));
+                Navigator.pop(context);
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: primaryColor,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12))),
-              child: _isLoading
-                ? const CircularProgressIndicator(color: Colors.white)
-                : Text(t('publish'),
-                  style: const TextStyle(color: Colors.white,
-                    fontSize: 16, fontWeight: FontWeight.bold)),
+              child: Text(t('publish'), style: const TextStyle(
+                color: Colors.white, fontSize: 16,
+                fontWeight: FontWeight.bold)),
             ),
           ),
         ]),
@@ -650,7 +569,8 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
       decoration: InputDecoration(
         labelText: label,
         prefixIcon: Icon(icon),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12))),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12))),
     );
   }
 
@@ -660,7 +580,8 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
       value: value,
       hint: Text(hint),
       decoration: InputDecoration(
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12))),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12))),
       items: items.map((e) => DropdownMenuItem(
         value: e, child: Text(e))).toList(),
       onChanged: onChanged,
@@ -668,7 +589,6 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
   }
 }
 
-// ===== PROFILE =====
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
@@ -682,19 +602,17 @@ class ProfileScreen extends StatelessWidget {
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: ListView(padding: const EdgeInsets.all(16), children: [
-        const CircleAvatar(radius: 50,
-          backgroundColor: primaryColor,
+        const CircleAvatar(radius: 50, backgroundColor: primaryColor,
           child: Icon(Icons.person, size: 50, color: Colors.white)),
         const SizedBox(height: 16),
-        const Center(
-          child: Text('+992 900 00 00 00',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),
+        const Center(child: Text('+992 900 00 00 00',
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),
         const SizedBox(height: 24),
-        _item(Icons.home, t('my_ads'), context),
+        _item(Icons.home, 'Мои объявления', context),
         _item(Icons.star, 'VIP & PREMIUM', context),
         _item(Icons.card_giftcard, 'Промо-коды', context),
-        _item(Icons.settings, t('settings'), context),
-        _item(Icons.help, t('help'), context),
+        _item(Icons.settings, 'Настройки', context),
+        _item(Icons.help, 'Помощь', context),
         const SizedBox(height: 24),
         ElevatedButton(
           onPressed: () => Navigator.pushReplacement(context,
@@ -704,8 +622,8 @@ class ProfileScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 16),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12))),
-          child: Text(t('logout'),
-            style: const TextStyle(color: Colors.white, fontSize: 16)),
+          child: Text(t('logout'), style: const TextStyle(
+            color: Colors.white, fontSize: 16)),
         ),
       ]),
     );
