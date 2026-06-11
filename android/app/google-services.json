@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "547409742972",
+    "project_id": "omar-estate",
+    "storage_bucket": "omar-estate.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:547409742972:android:3cbdf973fcbe0d1400cdf9",
+        "android_client_info": {
+          "package_name": "com.omar.estate"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAaCN8dgCTOw7neUFzHFx4iEDyiofBzW30"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
