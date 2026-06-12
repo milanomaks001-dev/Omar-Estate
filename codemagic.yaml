@@ -27,6 +27,6 @@ workflows:
           PYEOF
           python3 /tmp/gen_icons.py
       - name: Build APK
-        script: flutter build apk --debug
+        script: flutter build apk --profile
     artifacts:
       - build/**/outputs/**/*.apk
