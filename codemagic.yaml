@@ -7,6 +7,7 @@ workflows:
     scripts:
       - name: Get packages
         script: flutter pub get
+
       - name: Generate icons
         script: |
           pip3 install Pillow
@@ -26,7 +27,32 @@ workflows:
           print('Done')
           PYEOF
           python3 /tmp/gen_icons.py
-      - name: Build APK
-        script: flutter build apk --profile
+
+      - name: Create keystore
+        script: |
+          keytool -genkey -v \
+            -keystore /tmp/keystore.jks \
+            -alias omar \
+            -keyalg RSA \
+            -keysize 2048 \
+            -validity 10000 \
+            -storepass omar123456 \
+            -keypass omar123456 \
+            -dname "CN=Omar Estate, OU=Mobile, O=OmarEstate, L=Dushanbe, S=TJ, C=TJ"
+
+      - name: Build Release APK
+        script: |
+          flutter build apk --release --no-obfuscate
+
+      - name: Sign APK
+        script: |
+          APKSIGNER=${ANDROID_HOME}/build-tools/34.0.0/apksigner
+          $APKSIGNER sign \
+            --ks /tmp/keystore.jks \
+            --ks-pass pass:omar123456 \
+            --key-pass pass:omar123456 \
+            --ks-key-alias omar \
+            build/app/outputs/flutter-apk/app-release.apk
+
     artifacts:
-      - build/**/outputs/**/*.apk
+      - build/app/outputs/flutter-apk/app-release.apk
