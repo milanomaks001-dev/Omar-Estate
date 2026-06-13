@@ -28,7 +28,7 @@ workflows:
           PYEOF
           python3 /tmp/gen_icons.py
 
-      - name: Create keystore
+      - name: Build and Sign APK
         script: |
           keytool -genkey -v \
             -keystore /tmp/keystore.jks \
@@ -38,16 +38,9 @@ workflows:
             -validity 10000 \
             -storepass omar123456 \
             -keypass omar123456 \
-            -dname "CN=Omar Estate, OU=Mobile, O=OmarEstate, L=Dushanbe, S=TJ, C=TJ"
-
-      - name: Build Release APK
-        script: |
+            -dname "CN=OmarEstate"
           flutter build apk --release --no-obfuscate
-
-      - name: Sign APK
-        script: |
-          APKSIGNER=${ANDROID_HOME}/build-tools/34.0.0/apksigner
-          $APKSIGNER sign \
+          ${ANDROID_HOME}/build-tools/34.0.0/apksigner sign \
             --ks /tmp/keystore.jks \
             --ks-pass pass:omar123456 \
             --key-pass pass:omar123456 \
