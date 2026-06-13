@@ -40,7 +40,8 @@ workflows:
             -keypass omar123456 \
             -dname "CN=OmarEstate"
           flutter build apk --release --no-obfuscate
-          ${ANDROID_HOME}/build-tools/34.0.0/apksigner sign \
+          APKSIGNER=$(find $ANDROID_HOME/build-tools -name "apksigner" | sort -r | head -1)
+          $APKSIGNER sign \
             --ks /tmp/keystore.jks \
             --ks-pass pass:omar123456 \
             --key-pass pass:omar123456 \
