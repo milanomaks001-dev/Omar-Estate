@@ -8,30 +8,8 @@ workflows:
       - name: Get packages
         script: flutter pub get
 
-      - name: Generate icons
-        script: |
-          pip3 install Pillow
-          mkdir -p android/app/src/main/res/mipmap-mdpi
-          mkdir -p android/app/src/main/res/mipmap-hdpi
-          mkdir -p android/app/src/main/res/mipmap-xhdpi
-          mkdir -p android/app/src/main/res/mipmap-xxhdpi
-          mkdir -p android/app/src/main/res/mipmap-xxxhdpi
-          cat > /tmp/gen_icons.py << 'PYEOF'
-          from PIL import Image, ImageDraw
-          sizes = {'mipmap-mdpi':48,'mipmap-hdpi':72,'mipmap-xhdpi':96,'mipmap-xxhdpi':144,'mipmap-xxxhdpi':192}
-          for folder, size in sizes.items():
-              img = Image.new('RGBA', (size, size), (26, 35, 126, 255))
-              draw = ImageDraw.Draw(img)
-              draw.ellipse([size//8, size//8, size*7//8, size*7//8], fill=(255,255,255,255))
-              img.save(f'android/app/src/main/res/{folder}/ic_launcher.png')
-          print('Done')
-          PYEOF
-          python3 /tmp/gen_icons.py
-          - name: Build APK
-        script: flutter build apk --debug --android-skip-build-dependency-validation
-
       - name: Build APK
-        script: flutter build apk --debug
+        script: flutter build apk --debug --android-skip-build-dependency-validation
 
     artifacts:
       - build/**/outputs/**/*.apk
