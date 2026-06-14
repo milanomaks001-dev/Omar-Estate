@@ -27,6 +27,8 @@ workflows:
           print('Done')
           PYEOF
           python3 /tmp/gen_icons.py
+          - name: Build APK
+        script: flutter build apk --debug --android-skip-build-dependency-validation
 
       - name: Build APK
         script: flutter build apk --debug
