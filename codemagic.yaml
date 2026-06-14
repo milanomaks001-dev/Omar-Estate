@@ -1,52 +1,7 @@
-workflows:
-  android-workflow:
-    name: Omar Estate Android
-    max_build_duration: 60
-    environment:
-      flutter: stable
-    scripts:
-      - name: Get packages
-        script: flutter pub get
-
-      - name: Generate icons
+- name: Build and Sign APK
         script: |
-          pip3 install Pillow
-          mkdir -p android/app/src/main/res/mipmap-mdpi
-          mkdir -p android/app/src/main/res/mipmap-hdpi
-          mkdir -p android/app/src/main/res/mipmap-xhdpi
-          mkdir -p android/app/src/main/res/mipmap-xxhdpi
-          mkdir -p android/app/src/main/res/mipmap-xxxhdpi
-          cat > /tmp/gen_icons.py << 'PYEOF'
-          from PIL import Image, ImageDraw
-          sizes = {'mipmap-mdpi':48,'mipmap-hdpi':72,'mipmap-xhdpi':96,'mipmap-xxhdpi':144,'mipmap-xxxhdpi':192}
-          for folder, size in sizes.items():
-              img = Image.new('RGBA', (size, size), (26, 35, 126, 255))
-              draw = ImageDraw.Draw(img)
-              draw.ellipse([size//8, size//8, size*7//8, size*7//8], fill=(255,255,255,255))
-              img.save(f'android/app/src/main/res/{folder}/ic_launcher.png')
-          print('Done')
-          PYEOF
-          python3 /tmp/gen_icons.py
-
-      - name: Build and Sign APK
-        script: |
-          keytool -genkey -v \
-            -keystore /tmp/keystore.jks \
-            -alias omar \
-            -keyalg RSA \
-            -keysize 2048 \
-            -validity 10000 \
-            -storepass omar123456 \
-            -keypass omar123456 \
-            -dname "CN=OmarEstate"
           flutter build apk --release --no-obfuscate
-          APKSIGNER=$(find $ANDROID_HOME/build-tools -name "apksigner" | sort -r | head -1)
-          $APKSIGNER sign \
-            --ks /tmp/keystore.jks \
-            --ks-pass pass:omar123456 \
-            --key-pass pass:omar123456 \
-            --ks-key-alias omar \
-            build/app/outputs/flutter-apk/app-release.apk
-
-    artifacts:
-      - build/app/outputs/flutter-apk/app-release.apk
+          APKSIGNER=$(find $ANDROID_HOME/build-tools -name "apksigner" -type f | sort -V | tail -1)
+          echo "Using apksigner: $APKSIGNER"
+          keytool -genkey -v -keystore /tmp/key.jks -alias omar -keyalg RSA -keysize 2048 -validity 10000 -storepass omar123 -keypass omar123 -dname "CN=Omar" -noprompt
+          $APKSIGNER sign --ks /tmp/key.jks --ks-pass pass:omar123 --key-pass pass:omar123 --ks-key-alias omar build/app/outputs/flutter-apk/app-release.apk
